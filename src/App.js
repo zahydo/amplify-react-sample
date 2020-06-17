@@ -1,21 +1,12 @@
 import React, { Component } from "react";
-import Amplify, { graphqlOperation } from "aws-amplify";
-import { withAuthenticator, Connect } from "aws-amplify-react";
 
 import "./App.css";
-
-import awsConfig from "./aws-exports";
-import * as mutations from "./graphql/mutations";
-import * as queries from "./graphql/queries";
-import * as subscriptions from "./graphql/subscriptions";
-
-Amplify.configure(awsConfig);
 
 const ListView = ({ todos }) => (
   <div>
     <h2>All Todos</h2>
     <ul>
-      {todos.map(todo => (
+      {todos.map((todo) => (
         <li key={todo.id}>
           {todo.name} - {todo.description} - ({todo.id})
         </li>
@@ -29,7 +20,7 @@ class AddTodo extends Component {
     super(props);
     this.state = {
       name: "",
-      description: ""
+      description: "",
     };
   }
 
@@ -41,7 +32,7 @@ class AddTodo extends Component {
     const { onCreate } = this.props;
     var input = {
       name: this.state.name,
-      description: this.state.description
+      description: this.state.description,
     };
 
     this.setState({ name: "", description: "" });
@@ -54,29 +45,29 @@ class AddTodo extends Component {
         <input
           name="name"
           placeholder="name"
-          onChange={ev => {
+          onChange={(ev) => {
             this.handleChange("name", ev);
           }}
           style={{
             padding: "8px 16px",
-            margin: "5px"
+            margin: "5px",
           }}
         />
         <input
           name="description"
           placeholder="description"
-          onChange={ev => {
+          onChange={(ev) => {
             this.handleChange("description", ev);
           }}
           style={{
             padding: "8px 16px",
-            margin: "5px"
+            margin: "5px",
           }}
         />
         <button
           style={{
             padding: "8px 16px",
-            margin: "5px"
+            margin: "5px",
           }}
           onClick={this.submit.bind(this)}
         >
@@ -88,38 +79,16 @@ class AddTodo extends Component {
 }
 
 class App extends Component {
+
   render() {
     return (
       <div className="App">
-        <h2>Add Todo</h2>
-        <Connect mutation={graphqlOperation(mutations.createTodo)}>
-          {({ mutation }) => <AddTodo onCreate={mutation} />}
-        </Connect>
-
-        <Connect
-          query={graphqlOperation(queries.listTodos)}
-          subscription={graphqlOperation(subscriptions.onCreateTodo)}
-          onSubscriptionMsg={(prev, { onCreateTodo }) => {
-            return {
-              listTodos: {
-                items: [...prev.listTodos.items, onCreateTodo]
-              }
-            };
-          }}
-        >
-          {({ data: { listTodos }, loading, error }) => {
-            if (error) return <h3>Error</h3>;
-            if (loading || !listTodos) return <h3>Loading...</h3>;
-            return listTodos.items.length ? (
-              <ListView todos={listTodos ? listTodos.items : []} />
-            ) : (
-              <h3>No todos yet...</h3>
-            );
-          }}
-        </Connect>
+        <h1>TODO list</h1>
+        <AddTodo />
+        <ListView todos={[]} />
       </div>
     );
   }
 }
 
-export default withAuthenticator(App, true);
+export default App
