@@ -80,12 +80,19 @@ class AddTodo extends Component {
 
 class App extends Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      todos: [],
+    }
+  }
+
   render() {
     return (
       <div className="App">
         <h1>TODO list</h1>
-        <AddTodo />
-        <ListView todos={[]} />
+        <AddTodo onCreate={(item) => alert(JSON.stringify(item))} />
+        <ListView todos={this.state.todos} />
       </div>
     );
   }
