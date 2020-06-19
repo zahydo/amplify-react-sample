@@ -2,11 +2,11 @@ import React, { Component } from "react";
 
 import "./App.css";
 
-const ListView = ({ todos }) => (
+const ListView = ({ contacts }) => (
   <div>
-    <h2>All Todos</h2>
+    <h2>All contacts</h2>
     <ul>
-      {todos.map((todo) => (
+      {contacts.map((todo) => (
         <li key={todo.id}>
           {todo.name} - {todo.description} - ({todo.id})
         </li>
@@ -15,12 +15,12 @@ const ListView = ({ todos }) => (
   </div>
 );
 
-class AddTodo extends Component {
+class AddContact extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
-      description: "",
+      number: "",
     };
   }
 
@@ -32,10 +32,10 @@ class AddTodo extends Component {
     const { onCreate } = this.props;
     var input = {
       name: this.state.name,
-      description: this.state.description,
+      number: this.state.number,
     };
 
-    this.setState({ name: "", description: "" });
+    this.setState({ name: "", number: "" });
     await onCreate({ input });
   }
 
@@ -44,7 +44,7 @@ class AddTodo extends Component {
       <div>
         <input
           name="name"
-          placeholder="name"
+          placeholder="Name"
           onChange={(ev) => {
             this.handleChange("name", ev);
           }}
@@ -54,10 +54,11 @@ class AddTodo extends Component {
           }}
         />
         <input
-          name="description"
-          placeholder="description"
+          name="number"
+          type="number"
+          placeholder="Phone"
           onChange={(ev) => {
-            this.handleChange("description", ev);
+            this.handleChange("number", ev);
           }}
           style={{
             padding: "8px 16px",
@@ -83,16 +84,16 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      todos: [],
+      contacts: [],
     }
   }
 
   render() {
     return (
       <div className="App">
-        <h1>TODO list</h1>
-        <AddTodo onCreate={(item) => alert(JSON.stringify(item))} />
-        <ListView todos={this.state.todos} />
+        <h1>Contact list</h1>
+        <AddContact onCreate={(item) => alert(JSON.stringify(item))} />
+        <ListView contacts={this.state.contacts} />
       </div>
     );
   }
